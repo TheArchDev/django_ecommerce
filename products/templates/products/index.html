@@ -10,3 +10,40 @@ Product number {{ item.id }}
 </br>
 {% endfor %}
 </ul>
+
+
+<div class="pagination">
+  <span class="step-links">
+      {% if products.has_previous %}
+          <a href = "?page={{ products.previous_page_number }}">previous</a>
+	      {% endif %}
+
+    <span class="current">
+          Page {{ products.number }} of {{ products.paginator.num_pages }}.
+	      </span>
+
+    {% if products.has_next %}
+        <a href = "?page={{ products.next_page_number }}">next</a>
+	    {% endif %}
+	      </span>
+	      </div>
+
+<form>
+  Keyword:<br>
+    <input type="text" name="search" placeholder="Type word here"><br>
+  Price range:<br>
+    <input type="float" name="pricemore" placeholder="Min price"><br>
+    <input type="float" name="priceless" placeholder="Max price"><br>
+      <input type='submit'/>
+        </form>
+
+
+
+<!--
+<form>
+  Price range:<br>
+    <input type="float" name="pricemore" placeholder="Min price"><br>
+    <input type="float" name="priceless" placeholder="Max price"><br>
+      <input type='submit'/>
+        </form>
+-->
