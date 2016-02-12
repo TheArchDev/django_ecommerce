@@ -5,7 +5,7 @@
 Product number {{ item.id }}
 <li>{{ item.name }}</li>
 <li>{{ item.description }}</li>
-<li>{{ item.price }}</li>
+<li>${{ item.price }}</li>
 <li><a href="/products/{{ item.id }}">View Product</a></li>
 </br>
 {% endfor %}
@@ -39,11 +39,11 @@ Product number {{ item.id }}
 
 
 
-<!--
-<form>
-  Price range:<br>
-    <input type="float" name="pricemore" placeholder="Min price"><br>
-    <input type="float" name="priceless" placeholder="Max price"><br>
-      <input type='submit'/>
-        </form>
--->
+<ul>
+	<li><a href="/">Home</a></li>
+	<li><a href="/register">Register</a></li>
+	<li><a href="/login">Login</a></li>
+	<li><a href="/logout">Logout</a></li>
+	<li><a href="/products/">Go to All Products Page</a></li>
+	<li><a href="/products/cart">Go to Cart</a></li>
+</ul>
