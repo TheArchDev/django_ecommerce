@@ -16,3 +16,13 @@ class Order(models.Model):
       items = models.ManyToManyField(Product)
       def __str__(self):
             return str(self.status)
+
+class UserProfile(models.Model):
+	addressline1 = models.CharField(max_length=30)
+	addressline2 = models.CharField(max_length=30)
+	addresscity = models.CharField(max_length=30)
+	addresszip = models.CharField(max_length=15)
+	addresscountry = models.TextField(max_length=30)
+	user = models.ForeignKey(User)
+
+#MAKE SURE TO ADD THESE TO ADMIN! SO THAT THEY APPEAR IN THE ADMIN WEBPAGE, HOWEVER YOU DO THAT AGAIN

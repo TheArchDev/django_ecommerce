@@ -1,0 +1,29 @@
+<h1>Checkout page</h1>
+
+<form method='post'>
+	{% csrf_token %}
+	Address:<br>
+	<input type="text" name="address_line1" placeholder="Address line 1"><br>
+	<input type="text" name="address_line2" placeholder="Address line 2"><br>
+	<input type="text" name="address_city" placeholder="City"><br>
+	<input type="text" name="address_ZIP" placeholder="ZIP code"><br>
+	<input type="text" name="address_country" placeholder="Country"><br>
+	Payment details:<br>
+	<input type="integer" name="card_number" placeholder="Card number"><br>
+	<input type="integer" name="card_CVV" placeholder="CVV"><br>
+	<input type='submit'/>
+</form>
+
+<!--
+	Need to/can add the address details to the UserProfile database. Otherwise throw away the payment details?
+	add in a payment confirmation page, to show the details. Include as parameters in URL - weak security?
+-->
+
+<ul>
+  <li><a href="/">Home</a></li>
+  <li><a href="/register">Register</a></li>
+  <li><a href="/login">Login</a></li>
+  <li><a href="/logout">Logout</a></li>
+  <li><a href="/products/">Go to All Products Page</a></li>
+  <li><a href="/products/cart">Go to Cart</a></li>
+</ul>

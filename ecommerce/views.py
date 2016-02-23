@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login,logout
 def register(request):
 	#If user is not attempting to POST with their request, load up the register webpage
 	if request.method == 'GET' or request.method != 'POST':
-			return render(request, 'ecommerce/register.html', {})
+		return render(request, 'ecommerce/register.html', {})
 
 	#Otherwise, print user's post request to the terminal log
 	#print request.POST
@@ -28,7 +28,8 @@ def register(request):
 
 
 def home(request):
-	return render(request, 'ecommerce/home.html', {})
+	print "REQEUST.USER", request.user
+	return render(request, 'ecommerce/home.html', {"request":request})
 
 def login_user(request):
 
@@ -36,7 +37,7 @@ def login_user(request):
 
 	if request.method == 'GET' or request.method != 'POST':
 		print "trigger2", request.user
-		return render(request, 'ecommerce/login.html', {})
+		return render(request, 'ecommerce/login.html', {"request":request})
 
 	user = authenticate(username = request.POST['user_name'], password = request.POST['password'])
 

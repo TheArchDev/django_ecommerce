@@ -4,9 +4,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
 #think could have either .models or products.models
-from .models import Order
+from .models import Order, UserProfile
 from django.http import HttpResponse
 
+from django.core import serializers
 
 def index(request):
 	all_products = Product.objects.all()
@@ -36,6 +37,11 @@ def index(request):
 		all_products = all_products.filter(price__gte=pricemore)
 
 	#alternatively could have done two separate if statements. One to check for pricemore, then the altered all_products out of that can feed into the next if statement which will check for priceless, before amending all_products as appropriate
+
+	if request.GET.get("format") == "json":
+		all_products = serializers.serialize("json", all_products)
+		return HttpResponse(all_products, content_type='application/json')
+
 
 	#it's saying 10 max
 	paginator = Paginator(all_products,5)
@@ -119,9 +125,12 @@ def cart(request):
 		print "Trigger cart login"
 		return redirect("/login")
 	
-	#Need to add in an if statement such that if browser comes to this site without having placed an order
+	#Need to add in an if statement such that if browser comes to this site without having placed an order, ie if has an empty cart
 
-	orders = Order.objects.filter(user=request.user,status=1)
+	orders=Order.objects.filter(user=request.user,status=1)
+	if len(orders) == 0:
+		return redirect("/products/")
+		#return HttpResponse("Your cart is empty, please go to the Products page to select items")
 
 	order = orders[0]
 	order.save()
@@ -133,6 +142,54 @@ def cart(request):
 	return render(request,"products/cart.html", {"order_items": order_items, "cart_total":cart_total})
 	#return HttpResponse("You're successfully logged into your cart")
 
+def checkout(request):
+	if not request.user.is_authenticated():
+		print "Trigger cart login"
+		return redirect("/login")
+
+	if request.method == 'GET' or request.method != 'POST':
+		print "request.GET", request.GET
+		return render(request, "products/checkout.html", {})
+
+	print "request.POST: ", request.POST
+	print "request.user", request.user
+	print "request.GET", request.GET
+
+	order_to_checkout = Order.objects.get(status=1, user=request.user)
+	order_to_checkout.status=2
+	order_to_checkout.save()
+
+	print "request.user", request.user
+	print "type of request.user", type(request.user)
+
+	current_user_profile = UserProfile.objects.filter(user=request.user)
+
+	print "current_user_profile", current_user_profile
+
+	if len(current_user_profile) == 0:
+		user_profile_details = UserProfile(addressline1=request.POST['address_line1'], addressline2=request.POST['address_line2'], addresscity=request.POST['address_city'], addresszip=request.POST['address_ZIP'], addresscountry=request.POST['address_country'], user = request.user)
+
+		user_profile_details.save()
+
+		return redirect("/")
+
+	else:
+		user_profile_details = current_user_profile[0]
+
+		user_profile_details.addressline1=request.POST['address_line1']
+		user_profile_details.addressline2=request.POST['address_line2']
+		user_profile_details.addresscity=request.POST['address_city']
+		user_profile_details.addresszip=request.POST['address_ZIP']
+		user_profile_details.addresscountry=request.POST['address_country']
+
+		user_profile_details.save()
+
+		return redirect("/")
+
+
+
+
+	#Need to do an if-else statement. If it's their first order, insert into the UserProfile table, else need to give them an option to replace current information, or overwrite it
 
 
 

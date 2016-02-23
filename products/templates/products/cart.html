@@ -11,7 +11,12 @@
 {% endfor %}
 </ul>
 
+<!--
+	Could build in an if-else statement, such that if the cart is not empty, do the stuff above, else give them the option to go to the products page and buy some stuff.
+-->
+
 <h2>Total of cart: ${{ cart_total }}</h2>
+<h3><a href="/products/cart/checkout">Proceed to Checkout</a></h3>
 
 <ul>
 	<li><a href="/">Home</a></li>
