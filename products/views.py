@@ -65,6 +65,12 @@ def index(request):
 
 def product_page(request,id):
 	p = Product.objects.get(pk=id)
+
+	if request.GET.get("format") == "json":
+		#NB that needs to be an array as second parameter
+		p = serializers.serialize("json", [p])
+		return HttpResponse(p, content_type='application/json')
+
 	return render(request,'products/product.html', {'product': p})
 
 def add_to_cart(request, product_id):
